@@ -1,0 +1,93 @@
+timestamp: 3/22/2025, 8:14:49 AM
+type: llm.prediction.input
+modelIdentifier: gemma-3-4b-it
+modelPath: lmstudio-community/gemma-3-4b-it-GGUF/gemma-3-4b-it-Q4_K_M.gguf
+input: "<start_of_turn>user
+You are a tool-calling AI. You can request calls to available tools with this EXACT format:
+[TOOL_REQUEST]
+{"name": "tool_name", "arguments": {"param1": "value1"}}
+[END_TOOL_REQUEST]
+
+AVAILABLE TOOLS:
+{
+  "type": "toolArray",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "add",
+        "description": "Given two numbers a and b, returns the sum of them.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "integer"
+            },
+            "b": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "is_prime",
+        "description": "Given a number n, returns True if n is a prime number.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "n": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "n"
+          ]
+        }
+      }
+    }
+  ]
+}
+
+RULES:
+- Only use tools from AVAILABLE TOOLS
+- Include all required arguments
+- Use one [TOOL_REQUEST] block per tool
+- Never use [TOOL_RESULT]
+- If you decide to call one or more tools, there should be no other text in your message
+
+Examples:
+"Check Paris weather"
+[TOOL_REQUEST]
+{"name": "get_weather", "arguments": {"location": "Paris"}}
+[END_TOOL_REQUEST]
+
+"Send email to John about meeting and open browser"
+[TOOL_REQUEST]
+{"name": "send_email", "arguments": {"to": "John", "subject": "meeting"}}
+[END_TOOL_REQUEST]
+[TOOL_REQUEST]
+{"name": "open_browser", "arguments": {}}
+[END_TOOL_REQUEST]
+
+Respond conversationally if no matching tools exist.
+
+Is the result of 12345 + 45668 a prime? Think step by step.<end_of_turn>
+<start_of_turn>model
+First, I need to calculate the sum of 12345 and 45668.
+[TOOL_REQUEST]{"id":"267317909","type":"function","arguments":{"a":12345,"b":45668},"name":"add"}[END_TOOL_REQUEST]<end_of_turn>
+<start_of_turn>user
+[TOOL_RESULT]58013[END_TOOL_RESULT]<end_of_turn>
+<start_of_turn>model
+Now I need to check if 58013 is a prime number.
+[TOOL_REQUEST]{"id":"877784159","type":"function","arguments":{"n":58013},"name":"is_prime"}[END_TOOL_REQUEST]<end_of_turn>
+<start_of_turn>user
+[TOOL_RESULT]true[END_TOOL_RESULT]<end_of_turn>
+<start_of_turn>model
+"
